@@ -31,6 +31,103 @@ let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 
+// When the quiz starts hide the start button and display the quiz-container
+function startQuiz() {
+    document.getElementById("start-btn").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+    showQuestion();
+    startTimer();
+}
+
+// Now we have to show the question and answer options
+function showQuestion() {
+    const questionContainer = document.getElementById("question-container");
+    const answersContainer = document.getElementById("answers-container");
+
+    questionContainer.textContent = quizData[currentQuestionIndex].question;
+    answersContainer.innerHTML = "";
+
+
+    for (let i = 0; i < 4; i++) {
+        const answerParagraph = document.createElement("p");
+        const answerBtn = document.createElement("button");
+        answerBtn.textContent = quizData[currentQuestionIndex].answers[i];
+        answerBtn.onclick = function () {
+            checkAnswer(i);
+        };
+        answerParagraph.appendChild(answerBtn);
+        answersContainer.appendChild(answerParagraph);
+    }
+}
+
+function checkAnswer(answerIndex) {
+    if (answerIndex === quizData[currentQuestionIndex].correctAnswer) {
+        score++;
+    } else {
+        // Subtract time for incorrect answer
+        // Need to end quiz immediately when timer hits zero
+    }
+
+    nextQuestion();
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < quizData.length) {
+        showQuestion();
+    } else {
+        endQuiz();
+    }
+}
+
+function startTimer() {
+    // timer logic here
+    // setInterval to update the timer display every second
+}
+
+function endQuiz() {
+    document.getElementById("quiz-container").style.display = "none";
+    document.getElementById("result-container").style.display = "block";
+    document.getElementById("score").textContent = score;
+}
+
+function saveScore() {
+    const initials = document.getElementById("initials").value;
+
+    // Save score and initials to local storage
+    const userScore = { initials, score };
+    localStorage.setItem("userScore", JSON.stringify(userScore));
+
+    // Check for previous high score
+    // I have this set as an alert right now which I don't love.  In the mockup it shows a link for high score in the upper left corner
+    const prevHighScoreJSON = localStorage.getItem("highScore");
+    if (prevHighScoreJSON) {
+        const prevHighScore = JSON.parse(prevHighScoreJSON);
+        alert(`The previous high score was ${prevHighScore.score} by '${prevHighScore.initials}'.`);
+    }
+
+    // Check if the current score is a new high score
+    // Looked up and learned new operator:  ? is called a ternary if operator.  It's basically an "If/Return" operator
+    const prevHighScoreValue = prevHighScoreJSON ? prevHighScore.score : 0;
+    if (score > prevHighScoreValue) {
+        // Save current score as the new high score
+        localStorage.setItem("highScore", JSON.stringify(userScore));
+    }
+
+    // Reset the timer and quiz
+    resetQuiz();
+}
+
+function resetQuiz() {
+    // Implement logic to reset the timer and quiz state
+    // Stop the timer, reset the score, and reset the question index
+    score = 0;
+    currentQuestionIndex = 0;
+
+    // Restart the quiz
+    startQuiz();
+}
 
 
 
