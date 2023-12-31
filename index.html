@@ -1,9 +1,30 @@
-<!-- Pseudocode brainstorm
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Quiz</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
 
-for html page basically has two sections, the header where the questions go and the body where the answers are selected
+    <h1>Code Quiz</h1>
 
-to begin the body has to be a start button, or maybe a blank "Click anywhere to begin" and listen to the whole page EXAMPLE HAS SINGLE START QUIZ BUTTON, THAT'LL PROBABLY BE EASIEST
+    <button id="start-btn" onclick="startQuiz()">Start Quiz</button>
 
-after that header is the question itself and the body will be the multiple choice answers.  The example gives 4 options so have four buttons built out in html for js to populate
+    <div id="quiz-container">
+        <div id="question-container" class="question"></div>
+        <div id="answers-container" class="question"></div>
+        <button onclick="nextQuestion()">Next Question</button>
+    </div>
 
-HTML should be pretty straightforward -->
+    <div id="result-container">
+        <h2>Your Score: <span id="score">0</span></h2>
+        <label for="initials">Enter Your Initials:</label>
+        <input type="text" id="initials" maxlength="3">
+        <button onclick="saveScore()">Save Score</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
