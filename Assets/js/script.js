@@ -97,7 +97,7 @@ function endQuiz() {
     document.getElementById("score").textContent = score;
 }
 
-function saveScore() {
+function saveScore(pre) {
     const initials = document.getElementById("initials").value;
 
     // Save score and initials to local storage
@@ -113,15 +113,13 @@ function saveScore() {
     }
 
     // Check if the current score is a new high score
-    // Looked up and learned new operator:  ? is called a ternary if operator.  It's basically an "If/Return" operator
-    const prevHighScoreValue = prevHighScoreJSON ? prevHighScore.score : 0;
+    const prevHighScoreValue = prevHighScoreJSON 
     if (score > prevHighScoreValue) {
         // Save current score as the new high score
         localStorage.setItem("highScore", JSON.stringify(userScore));
     }
 
-    // Reset the timer and quiz, I tried a different way but it got too confusing so I'm making this a reload for now.  I might try to rework if I have more time but at least this is functional for now.
-    // THIS STILL ISN'T WORKING
+    // Reset the timer and quiz
     location.reload();
 
 }
@@ -153,43 +151,3 @@ function showHighScore() {
     }
 }
 
-
-
-// THIS DOESN'T SAY I HAVE TO SHOW CORRECT OR INCORRECT, HOWEVER THE MOCKUP DOES HAVE THIS
-
-
-
-// // Start with two global variables set at zero to Start
-
-// // 1. A clicker that goes every time an answer is chosen, this will dictate what gets populated into the page when it flips. 0=Start Quiz page, 1 = q1 and so onabort.apply.apply.apply
-// // 2. A timer that starts when the quiz begins and stops when it ends? (does it have to be timed?)
-// THE KICKER TO THIS IS THAT TIME GETS SUBTRACTED FOR A WRONG ANSWER Don't know how I do that...
-
-// // I need a way to track correct and incorrect.  Then on the final page this tally will be displayed.
-
-// // When clicker reaches a number the corresponding text is displayed in the question field and all the answer buttons.A
-
-// // Make buttons 2-4 invisible on start page (only have "start quiz" button) and final page (maybe a "try again" button).
-// // 
-// Declare these html pointers globally at the begining.
-
-// Have a way to save initials and score???  I'm assuming this is a local storage thing???
-
-// // // Acceptance Criteria
-
-// // GIVEN I am taking a code quiz
-
-// // WHEN I click the start button
-// // THEN a timer starts and I am presented with a question
-
-// // WHEN I answer a question
-// // THEN I am presented with another question
-
-// // WHEN I answer a question incorrectly
-// // THEN time is subtracted from the clock
-
-// // WHEN all questions are answered or the timer reaches 0
-// // THEN the game is over
-
-// // WHEN the game is over
-// // THEN I can save my initials and score
