@@ -64,8 +64,11 @@ function checkAnswer(answerIndex) {
     if (answerIndex === quizData[currentQuestionIndex].correctAnswer) {
         score++;
     } else {
-        // Subtract time for incorrect answer
-        // Need to end quiz immediately when timer hits zero
+        // Subtract one minute for an incorrect answer
+        timerValue -= 60;
+
+        // Ensure the timer doesn't go below zero
+        timerValue = Math.max(timerValue, 0);
     }
 
     nextQuestion();
@@ -87,6 +90,8 @@ function startTimer() {
 }
 
 function endQuiz() {
+   // Stop the timer
+    clearInterval(timer); 
     document.getElementById("quiz-container").style.display = "none";
     document.getElementById("result-container").style.display = "block";
     document.getElementById("score").textContent = score;
@@ -100,11 +105,11 @@ function saveScore() {
     localStorage.setItem("userScore", JSON.stringify(userScore));
 
     // Check for previous high score
-    // I have this set as an alert right now which I don't love.  In the mockup it shows a link for high score in the upper left corner
+    
     const prevHighScoreJSON = localStorage.getItem("highScore");
     if (prevHighScoreJSON) {
         const prevHighScore = JSON.parse(prevHighScoreJSON);
-        alert(`The previous high score was ${prevHighScore.score} by '${prevHighScore.initials}'.`);
+    
     }
 
     // Check if the current score is a new high score
@@ -115,25 +120,42 @@ function saveScore() {
         localStorage.setItem("highScore", JSON.stringify(userScore));
     }
 
-    // Reset the timer and quiz
-    resetQuiz();
-}
+    // Reset the timer and quiz, I tried a different way but it got too confusing so I'm making this a reload for now.  I might try to rework if I have more time but at least this is functional for now.
+    // THIS STILL ISN'T WORKING
+    location.reload();
 
-function resetQuiz() {
-    // Implement logic to reset the timer and quiz state
-    // Stop the timer, reset the score, and reset the question index
-    score = 0;
-    currentQuestionIndex = 0;
-
-    // Restart the quiz
-    startQuiz();
 }
 
 
+let timerValue = 600; // 10 minutes in seconds
+
+function startTimer() {
+    timer = setInterval(function () {
+        const minutes = Math.floor(timerValue / 60);
+        const seconds = timerValue % 60;
+        document.getElementById("timer").textContent = 'Timer: ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+
+        if (timerValue === 0) {
+            endQuiz();
+        } else {
+            timerValue--;
+        }
+    }, 1000);
+}
+
+function showHighScore() {
+    const prevHighScoreJSON = localStorage.getItem("highScore");
+    if (prevHighScoreJSON) {
+        const prevHighScore = JSON.parse(prevHighScoreJSON);
+        alert('The previous high score was ' + prevHighScore.score + ' by \'' + prevHighScore.initials + '\'.');
+    } else {
+        alert('No high score recorded yet.');
+    }
+}
 
 
 
-
+// THIS DOESN'T SAY I HAVE TO SHOW CORRECT OR INCORRECT, HOWEVER THE MOCKUP DOES HAVE THIS
 
 
 
